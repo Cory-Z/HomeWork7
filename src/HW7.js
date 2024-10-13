@@ -1,5 +1,6 @@
 import { LitElement, html, css } from 'lit';
 
+// Data for the 17 SDGs with their name, color, and image
 const goalData = [
   { name: 'No Poverty', color: '#e5243b', image: new URL('../lib/svgs/goal-1.svg', import.meta.url).href },
   { name: 'Zero Hunger', color: '#dda63a', image: new URL('../lib/svgs/goal-2.svg', import.meta.url).href },
@@ -20,51 +21,58 @@ const goalData = [
   { name: 'Partnerships for the Goals', color: '#19486a', image: new URL('../lib/svgs/goal-17.svg', import.meta.url).href }
 ];
 
+// Define the `UnSdg` custom element class
 export class UnSdg extends LitElement {
+  
+  // Define the properties for the component
   static get properties() {
     return {
-      goal: { type: String, reflect: true },
-      label: { type: String },
-      colorOnly: { type: Boolean, attribute: 'color-only', reflect: true },
-      _currentSrc: { type: String },
-      alt: { type: String },
+      goal: { type: String, reflect: true },    
+      label: { type: String },                 
+      colorOnly: { type: Boolean, attribute: 'color-only', reflect: true }, 
+      _currentSrc: { type: String },            
+      alt: { type: String },                    
     };
   }
 
+  // Define the styles for the component
   static get styles() {
     return css`
       :host {
-        display: inline-block;
-        width: 254px;
-        height: 254px;
+        display: inline-block;  
+        width: 254px;           
+        height: 254px;          
       }
       img {
-        width: 100%;
-        height: 100%;
-        object-fit: contain;
+        width: 100%;            
+        height: 100%;           
+        object-fit: contain;    
       }
       .color-only {
-        width: 100%;
-        height: 100%;
+        width: 100%;            
+        height: 100%;           
       }
     `;
   }
 
+  // Constructor to initialize default values
   constructor() {
     super();
-    this.goal = '1';
-    this.label = '';
-    this.alt = null;
-    this.colorOnly = false;
-    this._currentSrc = null;
+    this.goal = '1';           
+    this.label = '';            
+    this.alt = null;            
+    this.colorOnly = false;     
+    this._currentSrc = null;    
   }
 
+  // This method runs when the component is updated with new properties
   updated(changedProperties) {
     if (changedProperties.has('goal')) {
-      this.updateGoalImage();
+      this.updateGoalImage();   
     }
   }
 
+  // Method to update the image source and alt text based on the current goal
   updateGoalImage() {
     if (this.goal === 'all' || this.goal === 'circle') {
       this._currentSrc = new URL(`./lib/svgs/goal-${this.goal}.svg`, import.meta.url).href;
@@ -73,27 +81,31 @@ export class UnSdg extends LitElement {
           ? 'All Sustainable Development Goals'
           : 'Sustainable Development Goals Circle';
     } else {
-      const goalNumber = parseInt(this.goal);
+      const goalNumber = parseInt(this.goal); 
       if (goalNumber >= 1 && goalNumber <= 17) {
+        // Ensure goal is between 1 and 17, then set the source and alt text
         this._currentSrc = new URL(`./lib/svgs/goal-${goalNumber}.svg`, import.meta.url).href;
-        this.alt = `Goal ${goalNumber}: ${goalData[goalNumber - 1].name}`;
+        this.alt = `Goal ${goalNumber}: ${goalData[goalNumber - 1].name}`; 
       }
     }
   }
 
+  // Render the component based on the state
   render() {
-    // Ensure that the current source and alt text are defined before rendering
-    const currentSrc = this._currentSrc || ''; // Fallback to an empty string if _currentSrc is undefined
-    const altText = this.label || this.alt || 'Sustainable Development Goal'; // Fallback to a default alt text
-  
+    const currentSrc = this._currentSrc || ''; 
+    // Fallback to Sustainable Development Goal if neither label or alt are set
+    const altText = this.label || this.alt || 'Sustainable Development Goal';
+
     if (this.colorOnly) {
+      // Render color-only mode with the background color based on the goal
       const goalNumber = parseInt(this.goal);
       if (goalNumber >= 1 && goalNumber <= 17) {
         const color = goalData[goalNumber - 1].color;
         return html`<div class="color-only" style="background-color: ${color};"></div>`;
       }
     }
-  
+
+    // Render the img element with lazy loading and low fetch priority
     return html`
       <img
         src="${currentSrc}"
@@ -105,4 +117,5 @@ export class UnSdg extends LitElement {
   }
 }
 
+// Define the custom element so it can be used in HTML as <un-sdg>
 customElements.define('un-sdg', UnSdg);
