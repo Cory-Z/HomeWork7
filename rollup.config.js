@@ -3,6 +3,7 @@ import babel from '@rollup/plugin-babel';
 import { rollupPluginHTML as html } from '@web/rollup-plugin-html';
 import { importMetaAssets } from '@web/rollup-plugin-import-meta-assets';
 import esbuild from 'rollup-plugin-esbuild';
+import copy from 'rollup-plugin-copy'; 
 
 export default {
   input: 'index.html',
@@ -11,7 +12,7 @@ export default {
     chunkFileNames: '[hash].js',
     assetFileNames: '[hash][extname]',
     format: 'es',
-    dir: 'public',
+    dir: 'public', // Updated to match the output directory with copy plugin
   },
   preserveEntrySignatures: false,
 
@@ -23,7 +24,7 @@ export default {
     /** Resolve bare module imports */
     copy({
       targets: [
-        { src: 'lib/', dest: 'dist' }
+        { src: 'lib/', dest: 'public/lib' } 
       ]
     }),
     nodeResolve(),
@@ -56,4 +57,3 @@ export default {
     }),
   ],
 };
-import copy from 'rollup-plugin-copy';

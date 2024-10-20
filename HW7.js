@@ -75,7 +75,7 @@ export class UnSdg extends LitElement {
   // Method to update the image source and alt text based on the current goal
   updateGoalImage() {
     if (this.goal === 'all' || this.goal === 'circle') {
-      this._currentSrc = new URL(`./lib/svgs/goal-${this.goal}.svg`, import.meta.url).href;
+      this._currentSrc = new URL(`../lib/svgs/goal-${this.goal}.svg`, import.meta.url).href; // Ensure path is correct
       this.alt =
         this.goal === 'all'
           ? 'All Sustainable Development Goals'
@@ -84,7 +84,7 @@ export class UnSdg extends LitElement {
       const goalNumber = parseInt(this.goal); 
       if (goalNumber >= 1 && goalNumber <= 17) {
         // Ensure goal is between 1 and 17, then set the source and alt text
-        this._currentSrc = new URL(`./lib/svgs/goal-${goalNumber}.svg`, import.meta.url).href;
+        this._currentSrc = new URL(`../lib/svgs/goal-${goalNumber}.svg`, import.meta.url).href; // Ensure path is correct
         this.alt = `Goal ${goalNumber}: ${goalData[goalNumber - 1].name}`; 
       }
     }
@@ -117,5 +117,5 @@ export class UnSdg extends LitElement {
   }
 }
 
-// Define the custom element so it can be used in HTML as <un-sdg>
+
 customElements.define('un-sdg', UnSdg);
