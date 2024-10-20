@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>UN SDG Web Component</title>
+    <!-- Import the custom web component script -->
+    <script type="module" src="/src/un-sdg.js"></script>
+  </head>
+  <body>
+    <!-- Container for adding all the SDG components -->
+    <div id="app"></div>
+    
+    <!-- Button to demonstrate changing the goal of the first component randomly -->
+    <button>Change Goal</button>
+
+    <script>
+      const app = document.querySelector('#app');
+      
+      // Create all 17 SDG components and append them to the 'app' div
+      for (let i = 1; i <= 17; i++) {
+        const sdg = document.createElement('un-sdg');
+        sdg.goal = i.toString(); 
+        app.appendChild(sdg);     
+      }
+
+      // Create SDG circle component 
+      const circleSDG = document.createElement('un-sdg');
+      circleSDG.goal = 'circle';  
+      app.appendChild(circleSDG);  
+      
+      // Create the 'all' SDG component to show all goals
+      const allSDG = document.createElement('un-sdg');
+      allSDG.goal = 'all';         
+      app.appendChild(allSDG);     
+
+      // Demonstrate color-only option for goal 1
+      const colorOnlySDG = document.createElement('un-sdg');
+      colorOnlySDG.goal = '1';      
+      colorOnlySDG.colorOnly = true; 
+      app.appendChild(colorOnlySDG); 
+
+      // Add an event listener to the button to randomly change the goal of the last component
+      const changeGoalButton = document.querySelector('button');
+      changeGoalButton.addEventListener('click', () => {
+        const lastSDG = app.querySelector('un-sdg:last-child');
+        const randomGoal = Math.floor(Math.random() * 17) + 1; 
+        lastSDG.goal = randomGoal.toString();  
+      });
+    </script>
+  </body>
+</html>
